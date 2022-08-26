@@ -1,0 +1,4 @@
+{
+    "variables": {},
+    "query": "{\n  getEvents {\n    _id\n    title\n    date\n    dateEnd\n    description\n    location\n    region\n    sportType\n    highlight\n    imgURL\n    __typename\n  }\n}\n"
+}

@@ -1,0 +1,10 @@
+{
+  "retries": {
+    "runMode": 2,
+    "openMode": 1
+  },
+  "component": {
+    "componentFolder": "src",
+    "testFiles": "**/*spec.{js,jsx,ts,tsx}"
+  }
+}

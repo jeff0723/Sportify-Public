@@ -1,0 +1,253 @@
+const { gql } = require('apollo-server-express');
+
+const typeDefs = gql`
+
+  scalar FileUpload
+
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+  }
+
+  type EventFormBlock {
+    blockType: String
+    question: String
+    description: String
+    options: [String]
+    _id: String
+  }
+
+  type EventForm {
+    description: String
+    blocks: [EventFormBlock]
+  }
+
+  type Event {
+    _id: String!
+    host_id: String
+    title: String!
+    date: Date
+    dateEnd: Date
+    location: String
+    description: String
+    region: String
+    country: String
+    city: String
+    level: String
+    matches:Int
+    registrationInfo: String
+    trafficInfo: String
+    prize: String
+    highlight: String
+    fee: Int
+    sportType: String
+    public: Boolean!
+    release: Boolean!
+    form: EventForm
+    imgURL: String
+    drawURL: String
+    scheduleURL: String
+  }
+
+  type Host {
+    _id: String!
+    name: String!
+    email: String!
+    googleId: String
+    phone: String
+    page: String
+    bank_code: String
+    bank_account: String
+    account_name: String
+  }
+
+  type ApplicantFormBlock {
+    answer: String
+    blockId: String
+    blockType: String
+  }
+
+  type Form {
+      _id: String!
+      event_id: String!
+      blocks: [ApplicantFormBlock]
+      paid: Boolean
+  }
+
+  type Query {
+    hello(name: String): String
+    getEvents: [Event]
+    getEventsBySport(sportType:String!):[Event]
+    getEvent(eventId: String!): Event!
+    hostEvents(host_id: String!): [Event]
+    host(host_id: String!): Host!
+    eventForms(event_id: String!): [Form]
+    getEventHost(event_id: String!): Host!
+    getMatch(event_id:String!):[Match]
+    getCheckIn(event_id:String!):[CheckIn]
+  }
+
+  input ApplicantFormBlockInput {
+    answer: String
+    blockId: String
+    blockType: String
+  }
+
+  input FormInput {
+      _id: String
+      event_id: String
+      blocks: [ApplicantFormBlockInput]
+      paid: Boolean
+  }
+
+  input EventInput {
+      _id: String
+      host_id: String
+      title: String
+      date: Date
+      dateEnd: Date
+      location: String
+      region: String
+      country: String
+      city: String
+      description: String
+      registrationInfo: String
+      trafficInfo: String
+      prize: String
+      highlight: String
+      fee: Int
+      public: Boolean
+      release: Boolean
+      sportType: String
+      imgURL: String
+  }
+
+  input EventFormBlockInput {
+    blockType: String!
+    question: String
+    description: String
+    options: [String]
+  }
+
+  input EventFormInput {
+    _id: String!
+    description: String
+    blocks: [EventFormBlockInput]
+  }
+
+  input HostInput {
+    _id: String
+    name: String
+    email: String!
+    password: String
+    confirmPassword: String
+    googleId: String
+    phone: String
+    page: String
+    bank_code: String
+    bank_account: String
+    account_name: String
+  }
+
+  input ContactInput{
+    name: String
+    email: String
+    message: String
+  }
+
+  input EventFileInput {
+    file: FileUpload
+    eventId: String
+    originalFile: String
+  }
+
+  input PaymentInput{
+    MerchantTradeNo: String
+    MerchantTradeDate: String
+    TotalAmount: String
+    TradeDesc: String
+    ItemName: String
+    ReturnURL: String
+    ClientBackURL: String
+  }
+  
+  type Match{
+    _id: String
+    event_id: String
+    index:Int
+    match_name:String
+    player_p1: String
+    player_p2: String
+    serve_p1: String
+    serve_p2: String
+    point_p1:Int
+    point_p2:Int
+    set1_p1: Int
+    set1_p2: Int
+    set2_p1: Int
+    set2_p2: Int
+    set3_p1: Int
+    set3_p2: Int
+    live: Boolean
+  }
+  input MatchInput{
+    _id: String
+    event_id: String
+    index:Int
+    match_name:String
+    player_p1: String
+    player_p2: String
+    serve_p1: String
+    serve_p2: String
+    point_p1:Int
+    point_p2:Int
+    set1_p1: Int
+    set1_p2: Int
+    set2_p1: Int
+    set2_p2: Int
+    set3_p1: Int
+    set3_p2: Int
+    live: Boolean
+  }
+  input CheckInInput{
+    _id: String
+    event_id: String
+    name: String
+    email: String
+    checkInTime: String
+  }
+
+  type CheckIn{
+    _id: String
+    event_id: String
+    name: String
+    email: String
+    checkInTime: String
+
+  }
+  type Mutation {
+    addForm(data: FormInput!): Boolean!
+    newEvent(data: EventInput!): Boolean!
+    editEvent(data: EventInput!): Boolean!
+    editEventForm(data: EventFormInput!): Boolean!
+    loginCheck(data: HostInput!): Host
+    addHost(data: HostInput!): Host
+    editHost(data: HostInput!): Boolean!
+    saveRichEditor(data: EventInput!): Boolean!
+    setPaidStatus(data: FormInput!): Boolean!
+    singleUploadImg(data: EventFileInput): String
+    singleUploadFile(data: [EventFileInput]): [String]
+    addContact(data: ContactInput!): Boolean!
+    addPayment(data:PaymentInput!): String!
+    addMatch(data: MatchInput!):Boolean
+    editMatch(data: MatchInput!): Boolean
+    addCheckIn(data:CheckInInput!): Boolean
+    updateMatch(data: MatchInput!): Boolean
+    deleteMatch(data: MatchInput!): Boolean
+    deleteCheckIn(data: [String]!):Boolean
+    releaseEvent(data: EventInput!): Boolean
+  }
+`;
+
+module.exports = typeDefs;
